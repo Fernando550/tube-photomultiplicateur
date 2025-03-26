@@ -1,13 +1,11 @@
-import matplotlib.pyplot as ptl
+import ph_tube
 
 
-squares = [1,2,3,4]
+squares = [ 1, 2, 3, 4]
 
 def run():
-    fig, ax = ptl.subplots()
-    ax.plot(squares)
-
-    ptl.show()
+    tube = ph_tube()
+    tube.draw_photocathode()
 
 if __name__ == "__main__":
     run()

@@ -1,7 +1,5 @@
-import ph_tube
+from ph_tube_class import ph_tube
 
-
-squares = [ 1, 2, 3, 4]
 
 def run():
     tube = ph_tube()

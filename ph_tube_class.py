@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import numpy as np
 
 
 class ph_tube:
@@ -40,6 +41,14 @@ class ph_tube:
         # Show the plot
         plt.show()
 
+    def ph_model(self):
+        shape = (self.f, self.f)
+        ph = np.zeros(shape=shape)
+
+        plt.imshow(ph, cmap='viridis')
+        plt.show()
+        pass
+
 
 tube = ph_tube()
-tube.draw_photocathode()
+tube.ph_model()

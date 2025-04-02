@@ -1,14 +1,9 @@
-from ph_tube_class import ph_tube
+import ph_tube_class
 
 
 def run():
-<<<<<<< HEAD
-    tube = ph_tube()
+    tube = ph_tube_class.ph_tube()
     tube.draw_photocathode()
-=======
-    print("hello world ")
-    pass
->>>>>>> df8e702 (test of commit)
 
 if __name__ == "__main__":
     run()

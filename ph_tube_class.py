@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import numpy as np
 
 
 class ph_tube:
@@ -19,13 +20,20 @@ class ph_tube:
         ax.add_patch(tube)
 
         # Set limits and aspect ratio
-        ax.set_xlim(0, self.f + 1)  # or self.f + 0.5 for tight fit
+        ax.set_xlim(0, self.f + 1)
         ax.set_ylim(0, 5.5)         
         ax.set_aspect('equal')
 
         # Show the plot
         plt.show()
 
+x = np.linspace(0, 6, 200)
+y = np.linspace(0, 6, 200)
+X, Y = np.meshgrid(x, y)
 
-tube = ph_tube()
-tube.draw_photocathode()
+Z = X + Y  # Example scalar field
+
+plt.imshow(Z, cmap='hot', interpolation='none', extent=[0, 6, 6, 6])
+plt.colorbar()
+plt.title("Heatmap of Z")
+plt.show()

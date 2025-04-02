@@ -3,7 +3,20 @@ import matplotlib.patches as patches
 
 
 class ph_tube:
+    '''Le tube photomultiplicateur!'''
     def __init__(self, N=4, a=3, b=2, c=4, d=2, e=0.2, f=6):
+        '''
+        Initialise le tube. 
+
+        Arguments :
+        N : nombre de dynodes dans le tube
+        a : espacement entre les dynodes et les extrémités du tube
+        b : espacement entre les dynodes et les côtés du tube
+        c : longueur d'une dynode
+        d : espacement entre les dynodes
+        e : épaisseur d'une dynode
+        f : largeur de la base du tube
+        '''
         self.N = N
         self.a = a
         self.b = b
@@ -14,6 +27,7 @@ class ph_tube:
 
 
     def draw_photocathode(self):
+        '''Affiche le tube graphiquement.'''
         fig, ax = plt.subplots()
         tube = patches.Rectangle((0.5, 0.5), self.f, 4, edgecolor='black', facecolor='lightblue', linewidth=2)
         ax.add_patch(tube)

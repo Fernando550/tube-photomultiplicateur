@@ -10,12 +10,12 @@ class ph_tube:
 
         Arguments :
         N : nombre de dynodes dans le tube
-        a : espacement entre les dynodes et les extrémités du tube
-        b : espacement entre les dynodes et les côtés du tube
-        c : longueur d'une dynode
-        d : espacement entre les dynodes
-        e : épaisseur d'une dynode
-        f : largeur de la base du tube
+        a : espacement entre les dynodes et les extrémités du tube (mm)
+        b : espacement entre les dynodes et les côtés du tube (mm)
+        c : longueur d'une dynode (mm)
+        d : espacement entre les dynodes (mm)
+        e : épaisseur d'une dynode (mm)
+        f : largeur de la base du tube (mm)
         '''
         self.N = N
         self.a = a

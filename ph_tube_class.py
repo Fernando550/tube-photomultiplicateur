@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
+from matplotlib.patches import Rectangle
 
 
 class ph_tube:
     '''Le tube photomultiplicateur!'''
-    def __init__(self, N=4, a=3, b=2, c=4, d=2, e=0.2, f=6):
+    def __init__(self, N=4, a=3, b=2, c=4, d=2, e=0.2, f=6, g=16):
         '''
         Initialise le tube. 
 
@@ -17,6 +18,7 @@ class ph_tube:
         d : espacement entre les dynodes (mm)
         e : épaisseur d'une dynode (mm)
         f : largeur de la base du tube (mm)
+        g : 
         '''
         self.n_dynodes = N
         self.spacing = a
@@ -24,25 +26,27 @@ class ph_tube:
         self.dynode_width = c
         self.spacing_dynodes = d
         self.dynode_height = e
-        self.width = f
-        self.height = f/2
+        self.width = g
+        self.height = f
 
 
     def draw_photocathode(self):
-        '''Affiche le tube graphiquement.'''
+        # code by CHGPT
+        image = np.ones((self.height, self.width, 3))  
         fig, ax = plt.subplots()
-        tube = patches.Rectangle((0.5, 0.5), self.width, 4, edgecolor='black', facecolor='lightblue', linewidth=2)
-        ax.add_patch(tube)
+        ax.imshow(image)
 
-        # Set limits and aspect ratio
-        ax.set_xlim(0, self.width + 1)  # or self.f + 0.5 for tight fit
-        ax.set_ylim(0, 5.5)         
-        ax.set_aspect('equal')
-
-        # Show the plot
+        for i in range(self.n_dynodes):
+            x = self.spacing * (i + 1)
+            y = self.height // 2 - self.dynode_height // 2 - ((-1)**i) * 30  # Zig-zag pattern
+            dynode = Rectangle((x, y), self.dynode_width, self.dynode_height, color='skyblue', ec='black')
+            ax.add_patch(dynode)
+        
+        ax.set_title("2D Visualization of Photomultiplier Tube")
+        ax.axis('off')
         plt.show()
 
-    def ph_model(self):
+    def ph_visualaze(self):
         shape = (self.width, self.height)
         ph = np.zeros(shape=shape)
 
@@ -52,4 +56,4 @@ class ph_tube:
 
 
 tube = ph_tube()
-tube.ph_model()
+tube.draw_photocathode()

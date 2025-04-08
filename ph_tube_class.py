@@ -28,18 +28,21 @@ class ph_tube:
         self.dynode_height = e
         self.width = g
         self.height = f
+        self.h = 0.1
 
+    def make_grid_domain(self):
+        return (int(self.height/self.h), int(self.width/self.h))
 
     def draw_photocathode(self):
-        # code by CHGPT
-        image = np.ones((self.height, self.width, 3))  
+        shape = self.make_grid_domain()
+        image = np.zeros(shape, dtype=float)  
         fig, ax = plt.subplots()
-        ax.imshow(image)
+        ax.imshow(image, cmap='plasma', origin='lower')
 
         for i in range(self.n_dynodes):
             x = self.spacing * (i + 1)
             y = self.height // 2 - self.dynode_height // 2 - ((-1)**i) * 30  # Zig-zag pattern
-            dynode = Rectangle((x, y), self.dynode_width, self.dynode_height, color='skyblue', ec='black')
+            dynode = Rectangle((x, y), self.dynode_width, self.dynode_height, color='black')
             ax.add_patch(dynode)
         
         ax.set_title("2D Visualization of Photomultiplier Tube")
@@ -54,6 +57,7 @@ class ph_tube:
         plt.show()
         pass
 
+    
 
 tube = ph_tube()
 tube.draw_photocathode()

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Rectangle
+from scalarfield import ScalarField
 
 import my_tools
 
@@ -40,7 +40,10 @@ class ph_tube:
         self.height = 6
 
         # delta h
-        self.h = 0.1                         
+        self.h = 0.1
+
+        # boundary condition
+        self.conditions = []                         
        
         self.matrix = np.zeros((int(self.height/self.h), int(self.width/self.h)))
 
@@ -55,7 +58,7 @@ class ph_tube:
         # List with all voltages of each dynode
         dynodes_voltages = my_tools.set_voltage_dynodes(self.n_dynodes)
 
-        # Set the voltage of the right side of the tube
+        # Set the conditions of the right side of the tube
         self.matrix[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
         
 

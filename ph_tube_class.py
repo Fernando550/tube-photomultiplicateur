@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import numpy as np
 from matplotlib.patches import Rectangle
+
+import my_tools
 
 
 '''
@@ -32,53 +33,46 @@ class ph_tube:
 
         default.update(settings)
 
+        for key, value in default.items():
+            setattr(self, key, value)
+
         self.width = 19
         self.height = 6
 
         # delta h
         self.h = 0.1                         
-        
-
-        for key, value in default.items():
-            setattr(self, key, value)
        
+        self.matrix = np.zeros((int(self.height/self.h), int(self.width/self.h)))
 
-        self.grid = np.zeros((int(self.height/self.h), int(self.width/self.h)))
-        print(np.shape(self.grid))
+    def set_dynodes_positions(self):
+        positions = []
+        for position in range(self.n_dynodes):
 
-    def transformPosition(self, x, y):
-        return (x/self.h, y/self.h)
+            pass
+        return 
 
-    def made_Dinode(self, x, y):
-        position = self.transformPosition(x, y)
-        dynode = Rectangle(position, self.dynode_width, self.dynode_height, color='black')
-        return dynode
+    def set_boundary_conditions(self):
+        # List with all voltages of each dynode
+        dynodes_voltages = my_tools.set_voltage_dynodes(self.n_dynodes)
+
+        # Set the voltage of the right side of the tube
+        self.matrix[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
+        
 
     def draw_photocathode(self):
         fig, ax = plt.subplots()
-        ax.imshow(self.grid, cmap='plasma', origin='lower',
+        ax.imshow(self.matrix, cmap='plasma', origin='lower',
           extent=[0, self.width/self.h, 0, self.height/self.h])
 
-        # for i in range(self.n_dynodes):
-        #     x = self.transformPosition()
-        #     dynode = self.made_Dinode()
-        #     ax.add_patch(dynode)
-        
         ax.set_title("2D Visualization of Photomultiplier Tube")
         ax.axis('off')
         ax.set_xlim(0, self.width/self.h)
         ax.set_ylim(0, self.height/self.h)
         plt.show()
 
-    def ph_visualaze(self):
-        shape = (self.width, self.height)
-        ph = np.zeros(shape=shape)
-
-        plt.imshow(ph, cmap='viridis')
-        plt.show()
-        pass
 
     
 
 tube = ph_tube()
+tube.set_boundary_conditions()
 tube.draw_photocathode()

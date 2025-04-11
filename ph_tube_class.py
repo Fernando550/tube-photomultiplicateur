@@ -24,8 +24,8 @@ class ph_tube(ScalarField):
 
         default = {
             "n_dynodes": 4,
-            "spacing": 3,
-            "spacing_d_sides": 2,
+            "spacing": 3,     #a espacement entre les dynodes et les extrémités du tube (mm)
+            "spacing_d_sides": 2, #b espacement entre les dynodes et les côtés du tube (mm)
             "dynode_width": 4,
             "spacing_dynodes": 2,
             "dynode_height": 0.2,
@@ -50,11 +50,20 @@ class ph_tube(ScalarField):
         
 
     def set_dynodes_positions(self):
-        positions = []
-        for position in range(self.n_dynodes):
+        a, b = my_tools.shift_coords(self.spacing, self.spacing_d_sides, self.h)
+        positions = [(a, b)]
 
-            pass
-        return 
+        for position in range(self.n_dynodes):
+                position += 1
+                if (position) % 2 != 0:
+                    #  bottom dynoes
+                    positions.append((a, b))
+                    pass
+                else:
+                    #  top dynoes
+                    pass
+                
+        return positions
 
     def set_boundary_conditions(self):
         # List with all voltages of each dynode
@@ -67,6 +76,8 @@ class ph_tube(ScalarField):
     
 
 tube = ph_tube()
-print(tube.values)
-tube.set_boundary_conditions()
-tube.show(block=True)
+# print(tube.values)
+# tube.set_boundary_conditions()
+# tube.show(block=True)
+
+tube.set_dynodes_positions()

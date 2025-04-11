@@ -18,7 +18,7 @@ import my_tools
         f : largeur de la base du tube (mm)
         '''
 
-class ph_tube:
+class ph_tube(ScalarField):
     '''Le tube photomultiplicateur!'''
     def __init__(self, **settings):
 
@@ -38,14 +38,16 @@ class ph_tube:
 
         self.width = 19
         self.height = 6
-
+        
         # delta h
-        self.h = 0.1
+        self.h = 10
 
         # boundary condition
         self.conditions = []                         
        
-        self.matrix = np.zeros((int(self.height/self.h), int(self.width/self.h)))
+        super().__init__((self.height*self.h, self.width*self.h))
+
+        
 
     def set_dynodes_positions(self):
         positions = []
@@ -59,23 +61,12 @@ class ph_tube:
         dynodes_voltages = my_tools.set_voltage_dynodes(self.n_dynodes)
 
         # Set the conditions of the right side of the tube
-        self.matrix[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
+        self.values[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
         
-
-    def draw_photocathode(self):
-        fig, ax = plt.subplots()
-        ax.imshow(self.matrix, cmap='plasma', origin='lower',
-          extent=[0, self.width/self.h, 0, self.height/self.h])
-
-        ax.set_title("2D Visualization of Photomultiplier Tube")
-        ax.axis('off')
-        ax.set_xlim(0, self.width/self.h)
-        ax.set_ylim(0, self.height/self.h)
-        plt.show()
-
 
     
 
 tube = ph_tube()
+print(tube.values)
 tube.set_boundary_conditions()
-tube.draw_photocathode()
+tube.show(block=True)

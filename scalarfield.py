@@ -176,9 +176,9 @@ class ScalarField:
             plt.plot(self.values)
         else:
             if slices is not None:
-                plt.imshow(self.values[slices])
+                plt.imshow(self.values[slices], origin='lower')
             else:
-                plt.imshow(self.values)
+                plt.imshow(self.values, origin='lower')
 
         if block:
             plt.show()

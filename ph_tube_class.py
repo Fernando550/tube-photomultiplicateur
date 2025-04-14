@@ -41,9 +41,7 @@ class ph_tube(ScalarField):
         
         # delta h
         self.h = 10
-
-        # boundary condition
-        self.conditions = []   
+ 
 
         self.dynodes_positions = [(3,2), (6,4), (9,2), (12,4)]                      
        
@@ -75,15 +73,10 @@ class ph_tube(ScalarField):
         for i in range(len(dynodes_voltages)):
             a = int(positions[i][0])
             b = int(positions[i][1])
-            self.values[a : a + h, b : b + w] = dynodes_voltages[i]
-            print(dynodes_voltages[i])
+            self.values[b : b + h, a : a + w] = dynodes_voltages[i]
 
 
-        
-
-    
-
-tube = ph_tube()
+# tube = ph_tube()
 # print(tube.values)
-tube.set_boundary_conditions()
+# tube.set_boundary_conditions()
 # tube.show(block=True)

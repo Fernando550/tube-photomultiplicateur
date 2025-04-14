@@ -43,41 +43,47 @@ class ph_tube(ScalarField):
         self.h = 10
 
         # boundary condition
-        self.conditions = []                         
+        self.conditions = []   
+
+        self.dynodes_positions = [(3,2), (6,4), (9,2), (12,4)]                      
        
         super().__init__((self.height*self.h, self.width*self.h))
 
         
 
     def set_dynodes_positions(self):
-        a, b = my_tools.shift_coords(self.spacing, self.spacing_d_sides, self.h)
-        positions = [(a, b)]
 
-        for position in range(self.n_dynodes):
-                position += 1
-                if (position) % 2 != 0:
-                    #  bottom dynoes
-                    positions.append((a, b))
-                    pass
-                else:
-                    #  top dynoes
-                    pass
-                
+        positions = []
+        for a, b in self.dynodes_positions:
+            positions.append(my_tools.shift_coords(a, b, self.h))
+
         return positions
 
-    def set_boundary_conditions(self):
+    def set_boundary_conditions(self, positions=None):
+        if positions == None:
+            positions = self.set_dynodes_positions()
+
         # List with all voltages of each dynode
         dynodes_voltages = my_tools.set_voltage_dynodes(self.n_dynodes)
 
         # Set the conditions of the right side of the tube
         self.values[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
+
+        w = int(self.dynode_width * self.h)
+        h = int(self.dynode_height * self.h)
+
+        for i in range(len(dynodes_voltages)):
+            a = int(positions[i][0])
+            b = int(positions[i][1])
+            self.values[a : a + h, b : b + w] = dynodes_voltages[i]
+            print(dynodes_voltages[i])
+
+
         
 
     
 
 tube = ph_tube()
 # print(tube.values)
-# tube.set_boundary_conditions()
+tube.set_boundary_conditions()
 # tube.show(block=True)
-
-tube.set_dynodes_positions()

@@ -2,6 +2,66 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+class SurfaceDomain:
+    def __init__(self, size=None, N=10, X=None, Y=None):
+        """
+        Le domain par défaut va de -10 a 10 en X et Y, et discrétise
+        avec N=19 points. L'utilisateur peut quand même fournir ses np.array
+        X et Y, déjà calculés d'avance.
+        """
+        if size is not None:
+            X, Y = self.create_square_meshgrid(size, N)
+        elif X is not None or Y is not None:
+            X = np.linspace(0, X, N)
+            Y = np.linspace(0, Y, N)
+            self.surface = np.meshgrid(X, Y)
+        else:
+            raise ValueError("Vous devez fournir size ou X et Y")
+            
+        if len(X) != len(Y):
+            raise ValueError("Les composantes X et Y doivent avoir le meme nombre d'éléments")
+
+        self.X = X 
+        self.Y = Y # et d'utiliser les @property accessors ou les fonctions
+
+    def xy_mesh(self, xo=0, yo=0):
+        """
+        Les np.arrays X,Y du meshgrid, mais relatif à l'origine (xo, yo).
+        Ceci permet d'utiliser directement les valeurs pour le calcul du
+        champ d'une charge unique.
+
+        Par défaut, l'origine est à (0,0)
+        """
+        X,Y = self.X-xo, self.Y-yo
+        return X,Y
+
+    def rphi_mesh(self, xo=0, yo=0):
+        """
+        Les np.arrays en coordonnées polaires, R,PHI du meshgrid, mais 
+        relatif à l'origine (xo, yo).
+        Ceci permet d'utiliser directement les valeurs pour le calcul du
+        champ d'une charge unique.
+
+        Par défaut, l'origine est à (0,0)
+        """
+        X,Y = self.xy_mesh(xo, yo)
+        return np.sqrt(X*X+Y*Y), np.arctan2(Y, X)
+
+    def set_square_meshgrid(self, size=20, N=19):
+        """
+        Fonction pour assigner un domaine XY rapidement
+        """
+        self.X, self.Y = self.create_square_meshgrid(size, N)
+
+    def create_square_meshgrid(self, size=20, N=19):
+        """
+        Fonction pour créer un domaine XY rapidement
+        """
+        x = np.linspace(-size/2,size/2, N)
+        y = np.linspace(-size/2,size/2, N)
+        return np.meshgrid(x,y)
+    
+
 class VectorField2D:
     def __init__(self, surface=None, U=None, V=None):
         """

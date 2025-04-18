@@ -1,5 +1,5 @@
 import ph_tube_class
-from vectorfield import SurfaceDomain, VectorField2D
+from eletricField import eletric_field
 
 
 def run():
@@ -10,12 +10,10 @@ def run():
     tube.solve_laplace_by_relaxation()
     tube.show(block=False)
 
-    x, y = tube.values.shape
-
-    domain = SurfaceDomain(X=x, Y=y)
+    e_field = eletric_field(tube.values)
+    # e_field.display()
+    e_field.show()
     
-   
-
 
 if __name__ == "__main__":
     run()

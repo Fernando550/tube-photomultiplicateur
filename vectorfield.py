@@ -35,17 +35,6 @@ class SurfaceDomain:
         X,Y = self.X-xo, self.Y-yo
         return X,Y
 
-    def rphi_mesh(self, xo=0, yo=0):
-        """
-        Les np.arrays en coordonnées polaires, R,PHI du meshgrid, mais 
-        relatif à l'origine (xo, yo).
-        Ceci permet d'utiliser directement les valeurs pour le calcul du
-        champ d'une charge unique.
-
-        Par défaut, l'origine est à (0,0)
-        """
-        X,Y = self.xy_mesh(xo, yo)
-        return np.sqrt(X*X+Y*Y), np.arctan2(Y, X)
 
     def set_square_meshgrid(self, size=20, N=19):
         """
@@ -89,7 +78,7 @@ class VectorField2D:
 
     def create_null_field_components(self):
         X,Y = self.domain.xy_mesh()
-        return X*0, X*0 # C'est un truc pour avoir rapidement une liste de la meme longueur avec des zeros
+        return X*0, Y*0 # C'est un truc pour avoir rapidement une liste de la meme longueur avec des zeros
 
     def create_single_charge_field_components(self, xo=0, yo=0, q=1):
         R, PHI = self.domain.rphi_mesh(xo, yo)

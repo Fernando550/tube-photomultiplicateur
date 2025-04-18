@@ -19,8 +19,9 @@ class eletric_field:
         return np.sqrt(self.Ex*self.Ex+self.Ey*self.Ey)
 
     def trasform_to_eltricfield(self):
-        dx, dy = np.gradient(self.domain)
-        return (-1 * dx, -1 * dy)
+        field = np.fliplr(self.domain)
+        dy, dx = np.gradient(field, 10)
+        return (-dx, -dy)
     
     def generate_meshgrid(self):
         x = np.linspace(0, self.domain.shape[1] - 1, self.domain.shape[1])
@@ -64,7 +65,7 @@ class eletric_field:
         U, V = self.normalise_vectors(Ex_sub, Ey_sub)
         plt.quiver(X_sub, Y_sub, U, V, cmap="viridis_r")
         plt.title("Eletric Vector Field")
-        plt.gca().invert_yaxis()  # Optional: to match matrix layout with image coords
+        plt.gca().invert_yaxis()  
         plt.show()
 
     def display(self, use_color=True, title=None):
@@ -119,6 +120,9 @@ class eletric_field:
             self.quiver_axes.quiver(X, Y, self.U, self.V)
 
         self.quiver_axes.set_aspect('equal')
+        # plt.xlim(self.X.max(), self.X.min())  # Flip X-axis explicitly
+        # plt.ylim(self.Y.min(), self.Y.max())  # Optional: preserve Y direction
+        plt.gca().invert_xaxis()
         plt.title(title)
         plt.show()
         self.quiver_axes = None

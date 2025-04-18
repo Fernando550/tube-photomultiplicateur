@@ -11,8 +11,8 @@ def run():
     tube.show(block=False)
 
     e_field = eletric_field(tube.values)
-    # e_field.display()
-    e_field.show()
+    e_field.display()
+    # e_field.show()
     
 
 if __name__ == "__main__":

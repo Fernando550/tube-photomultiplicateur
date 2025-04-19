@@ -12,7 +12,8 @@ def run():
 
     e_field = eletric_field(tube.values)
     e_field.display()
-    # e_field.show()
+
+    print(e_field.get_vector(45, 0))
     
 
 if __name__ == "__main__":

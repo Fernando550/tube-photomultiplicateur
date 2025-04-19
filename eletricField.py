@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from vectorfield import VectorField2D
 
 
 class eletric_field:
@@ -14,20 +13,27 @@ class eletric_field:
 
         self.quiver_axes = None
 
+        self.U = U
+        self.V = V
+
     @property
     def magnitude(self):
         return np.sqrt(self.Ex*self.Ex+self.Ey*self.Ey)
 
     def trasform_to_eltricfield(self):
-        field = np.fliplr(self.domain)
-        dy, dx = np.gradient(field, 10)
+        field = self.domain
+        dy, dx = np.gradient(field)
         return (-dx, -dy)
     
     def generate_meshgrid(self):
-        x = np.linspace(0, self.domain.shape[1] - 1, self.domain.shape[1])
-        y = np.linspace(0, self.domain.shape[0] - 1, self.domain.shape[0])
+        height, width = self.domain.shape
+
+        x = np.linspace(0, self.domain.shape[1], self.domain.shape[1])
+        y = np.linspace(-height // 2, height // 2, height)
         X, Y = np.meshgrid(x, y)
+
         return (X, Y)
+   
     
     def normalise_vectors(self, U, V):
         lengths = np.sqrt(U**2 +V**2)
@@ -68,62 +74,54 @@ class eletric_field:
         plt.gca().invert_yaxis()  
         plt.show()
 
-    def display(self, use_color=True, title=None):
-        # self.validate_arrays()
+    def display(self, use_color=True, title="Electric Field"):
 
         if self.quiver_axes is None:
-            self.quiver_axes = plt.subplot(1,1,1)
+            self.quiver_axes = plt.subplot(1, 1, 1)
             self.quiver_axes.tick_params(direction="in")
 
         self.quiver_axes.cla()
 
-        X,Y = self.xy_mesh()
+        X, Y = self.xy_mesh()
 
         if use_color:
-            """
-            Au lieu de prendre la longueur de la fleche pour représenter
-            la force du champ, je garde les fleches de la meme longueur
-            et je les colore en fonction de la force du champ.
+            lengths = self.magnitude.copy()
+            lengths[lengths == 0] = 1
 
-            Je dois gérer lorsque la longueur du vecteur est nulle, car on 
-            tente de normaliser un vecteur nul, ce qui n'est pas possible.
-            Cependant, si je mets lengths == 1, j'aurai simplement U/length == 0
-            et V/lengths == 0 donc ce sera ok.
-            """
+            U = self.Ex / lengths
+            V = self.Ey / lengths
 
-            lengths = self.magnitude
-
-            null_field = (lengths == 0)
-            lengths[null_field] = 1
-
-            U = self.Ex/lengths
-            V = self.Ey/lengths
-
-            
-            """
-            Les couleurs sont biaisées car il y a souvent des valeurs tres grandes.
-            PLutot que de normaliser sur la plus grande valeurs, je limite
-            les valeurs entre les percentiles 10-90 et je normalise la longueur des fleches.
-            Ca fait plus beau.
-            """
             percentile_10th = np.percentile(lengths, 10)
             percentile_90th = np.percentile(lengths, 90)
-            colors = np.clip(lengths, a_min=percentile_10th, a_max=percentile_90th)
+            colors = np.clip(lengths, percentile_10th, percentile_90th)
 
-            """
-            Et finalement, j'ai compris que les unités du champ sont plus simple
-            lorsqu'on prend relatif a la grandeur du graphique: la largeur
-            de la fleche sera aussi mieux adaptée independamment des unités.
-            """
-            self.quiver_axes.quiver(X, Y, U, V, colors, cmap="viridis_r")
+            quiv = self.quiver_axes.quiver(X, Y, U, V, colors, cmap="viridis_r")
         else:
-            self.quiver_axes.quiver(X, Y, self.U, self.V)
+            quiv = self.quiver_axes.quiver(X, Y, self.Ex, self.Ey)
 
         self.quiver_axes.set_aspect('equal')
-        # plt.xlim(self.X.max(), self.X.min())  # Flip X-axis explicitly
-        # plt.ylim(self.Y.min(), self.Y.max())  # Optional: preserve Y direction
-        plt.gca().invert_xaxis()
+
+        y_half_range = np.abs(self.Y).max()
+        self.quiver_axes.set_ylim(-y_half_range, y_half_range)
+
+
+        # plt.axhline(0, color='black', linestyle='--', linewidth=0.5)
+        # plt.axvline(0, color='black', linestyle='--', linewidth=0.5)
+
         plt.title(title)
+        cbar = plt.colorbar(quiv, ax=self.quiver_axes)
+        cbar.set_label('Vector Magnitude')
+
         plt.show()
         self.quiver_axes = None
-        
+
+    def get_vector(self, x=0, y=0):
+        #cette partie du code a ete fait par chatgpt
+        idx_x = (np.abs(self.X[0, :] - x)).argmin()
+        idx_y = (np.abs(self.Y[:, 0] - y)).argmin()
+
+        Ex_val = self.Ex[idx_y, idx_x]
+        Ey_val = self.Ey[idx_y, idx_x]
+
+        return Ex_val, Ey_val
+                

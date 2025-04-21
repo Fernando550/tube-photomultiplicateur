@@ -1,5 +1,6 @@
 import ph_tube_class
 from eletricField import eletric_field
+from ParticleMotionSolver import particle_motion
 
 
 def run():
@@ -13,8 +14,8 @@ def run():
     e_field = eletric_field(tube.values)
     e_field.display()
 
-    print(e_field.get_vector(45, 0))
-    
+    eletron_motion = particle_motion(e_field)
+    eletron_motion.draw_path()
 
 if __name__ == "__main__":
     run()

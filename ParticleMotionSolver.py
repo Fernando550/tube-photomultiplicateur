@@ -10,12 +10,13 @@ class particle_motion:
         self.charge = charge
         self.masse = masse
         self.position = (x0, y0)
-        self.accelaration = (0, 0)
+        self.acceleration = (0, 0)
         self.velocity = (0, 0)
 
-        self.time_interval = 0.00001
+        self.time_interval = 0.01
 
         self.trajectory = [(x0, y0)]
+        self.euler_path = []                                #trajectory made by euler method
 
         self.domain = eletric_field.domain.shape
         
@@ -24,10 +25,10 @@ class particle_motion:
             x, y = self.position
         
         Ex, Ey = self.eletric_field.get_vector_at(x, y)
-        print(Ex, Ey)
+
         return Ex*self.charge, Ey*self.charge
 
-    def get_accelaration(self, x, y):
+    def get_acceleration(self, x, y):
         force_x, force_y = self.get_force(x, y)
         return force_x/self.masse, force_y/self.masse
 
@@ -60,7 +61,7 @@ class particle_motion:
                 break
 
             x0, y0 = self.position 
-            ax0, ay0 = self.get_accelaration(x0, y0)
+            ax0, ay0 = self.get_acceleration(x0, y0)
             vx, vy = self.get_new_velocity(ax0, ay0)
             delta_x, delat_y = self.displacement(ax0, ay0, vx, vy)
             self.trajectory.append((x0 + delta_x, y0 + delat_y))
@@ -69,9 +70,9 @@ class particle_motion:
             steps += 1
 
     def draw_path(self):
-        self.make_trajectory()
+        # self.make_trajectory()
+        self.X(10000)
         x_vals, y_vals = zip(*self.trajectory)
-
         plt.figure(figsize=(19, 6))
         plt.plot(x_vals, y_vals, marker='o', linestyle='-', color='blue', label='Electron Path')
 
@@ -79,14 +80,38 @@ class particle_motion:
         plt.xlim(x_min, self.domain[1])
 
         plt.ylim(-30, 30)
-        plt.axhline(0, color='gray', linestyle='--', linewidth=1)  # Optional: show Y=0 line
-        plt.axvline(0, color='gray', linestyle='--', linewidth=1)  # Optional: show X=0 line
+        plt.axhline(0, color='gray', linestyle='--', linewidth=1)  
+        plt.axvline(0, color='gray', linestyle='--', linewidth=1)  
 
-        # Labels and title
         plt.xlabel("X Position")
         plt.ylabel("Y Position")
         plt.title("Electron Trajectory")
         plt.legend()
         plt.grid(True)
-        plt.gca().set_aspect('equal')  # Optional: keep scale ratio realistic
+        plt.gca().set_aspect('equal') 
         plt.show()
+
+    def euler_method_position(self, x0, y0, vx, vy):
+        h = self.time_interval
+        xf = x0 + (vx * h)
+        yf = y0 + (vy * h)
+
+        return xf, yf
+
+    def X(self, t=0):
+        time = self.time_interval
+        x0, y0 = self.position
+        while time <= t:
+            x0, y0 = self.position
+            d2x, d2y = self.get_acceleration(x0, y0)
+            dx, dy = self.get_new_velocity(d2x, d2y)
+            xf, yf = self.euler_method_position(x0, y0, dx, dy)
+            self.trajectory.append((xf, yf))
+            self.position = (xf, yf)
+            time += self.time_interval
+        print(self.trajectory)
+        return self.position
+    
+
+    
+    

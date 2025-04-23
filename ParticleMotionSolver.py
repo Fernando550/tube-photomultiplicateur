@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from eletricField import eletric_field
 
 # Constantes physiques
 charge_electron = -1.602176634e-19  # C
 masse_electron = 9.10938356e-31     # kg
 
 class particle_motion:
-    def __init__(self, electric_field, x0=0, y0=0, vx0=0, vy0=0,
+    def __init__(self, electric_field: eletric_field, x0=0, y0=0, vx0=0, vy0=0,
                  charge=charge_electron, masse=masse_electron):
         self.E = electric_field
         self.charge = charge

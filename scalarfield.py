@@ -2,7 +2,6 @@
 A class ScalarField to represent a scalar field in 2D or 3D.
 If the field obeys the Laplace equation, it can be solved
 and visualised.
-
 """
 
 import math
@@ -36,7 +35,7 @@ class ScalarField:
     @property
     def shape(self):
         """
-        Convcenience function to return the shape of the scalar field.
+        Convenience function to return the shape of the scalar field.
 
         Returns:
         tuple: The shape of the field.
@@ -176,9 +175,12 @@ class ScalarField:
             plt.plot(self.values)
         else:
             if slices is not None:
-                plt.imshow(self.values[slices], origin='lower')
+                img = plt.imshow(self.values[slices], origin='lower')
             else:
-                plt.imshow(self.values, origin='lower')
+                img = plt.imshow(self.values, origin='lower')
+            
+            # Ajout de la colorbar
+            plt.colorbar(img, label='Potential (V)')
 
         if block:
             plt.show()

@@ -18,7 +18,7 @@ class particle_motion:
         self.acceleration = np.array([0, 0], float)
         
 
-        self.dt = 1e-5
+        self.dt = 1e-9
 
         self.trajectory = []
         self.euler_path = []                               
@@ -45,7 +45,7 @@ class particle_motion:
         x, y = self.position
         self.trajectory.append((x, y))
 
-        while steps <= 100_000:
+        while steps <= 100000:
             xf, yf = self.method_of_euler()
             self.trajectory.append((xf, yf))
             steps += 1

@@ -65,7 +65,7 @@ class ph_tube(ScalarField):
         dynodes_voltages = my_tools.set_voltage_dynodes(self.n_dynodes)
 
         # Set the conditions of the right side of the tube
-        self.values[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
+        # self.values[:,-1] = (len(dynodes_voltages) + 1) * 100.0 
 
         w = int(self.dynode_width * self.h)
         h = int(self.dynode_height * self.h)

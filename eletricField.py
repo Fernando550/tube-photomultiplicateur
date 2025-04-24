@@ -116,12 +116,14 @@ class eletric_field:
         self.quiver_axes = None
 
     def get_vector_at(self, x=0, y=0):
-        #cette partie du code a ete fait par chatgpt
+        
         idx_x = (np.abs(self.X[0, :] - x)).argmin()
         idx_y = (np.abs(self.Y[:, 0] - y)).argmin()
 
         Ex_val = self.Ex[idx_y, idx_x]
         Ey_val = self.Ey[idx_y, idx_x]
+
+        print(Ex_val, Ey_val, (x, y))
 
         return Ex_val, Ey_val
                 

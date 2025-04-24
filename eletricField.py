@@ -6,7 +6,7 @@ class eletric_field:
     def __init__(self, surface, U=None, V=None):
         # super().__init__(surface, U, V)
 
-        self.domain = surface
+        self.domain = surface.values
         self.Ex, self.Ey = self.trasform_to_eltricfield()
         self.X, self.Y = self.generate_meshgrid()
         self.field_magnitude = 1

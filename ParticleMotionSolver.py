@@ -2,17 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-charge_electron = -1.602176634e-19
-masse_electron = 9.1093837e-31
-
-#domain --> tube
+# Constantes physiques
+charge_electron = -1.602176634e-19  # C
+masse_electron = 9.10938356e-31     # kg
 
 class particle_motion:
-    def __init__(self, eletric_field, x0=0, y0=0, charge=charge_electron, masse=masse_electron):
-
-        self.eletric_field = eletric_field
+    def __init__(self, electric_field, x0=0, y0=0, charge=charge_electron, masse=masse_electron):
+        self.electric_field = electric_field
         self.charge = charge
         self.masse = masse
+
         self.position = (x0, y0)
         self.velocity = np.array([0, 0], float)
         self.acceleration = np.array([0, 0], float)
@@ -23,12 +22,12 @@ class particle_motion:
         self.trajectory = []
         self.euler_path = []                               
 
-        self.domain = eletric_field.domain.shape
+        self.domain = electric_field.domain.shape
         
   
     def method_of_euler(self):
         x, y = self.position
-        Ex, Ey = self.eletric_field.get_vector_at(x, y)
+        Ex, Ey = self.electric_field.get_vector_at(x, y)
 
         force_vector = np.array([Ex, Ey])*self.charge  #force 
         acceleration = force_vector/self.masse
@@ -77,8 +76,3 @@ class particle_motion:
         plt.grid(True)
         plt.gca().set_aspect('equal') 
         plt.show()
-
-    
-
-    
-    

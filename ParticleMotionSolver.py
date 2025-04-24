@@ -19,7 +19,7 @@ class particle_motion:
         
 
         self.dt = 1e-9
-
+        self.iterations = 100000
         self.trajectory = []
         self.euler_path = []                               
 
@@ -33,9 +33,11 @@ class particle_motion:
         force_vector = np.array([Ex, Ey])*self.charge  #force 
         acceleration = force_vector/self.masse
 
+        v0 = self.velocity
+
         self.velocity = self.velocity + self.dt * acceleration
 
-        self.position = self.position + self.dt * self.velocity
+        self.position = self.position + self.dt * v0
 
         return self.position
 
@@ -45,7 +47,7 @@ class particle_motion:
         x, y = self.position
         self.trajectory.append((x, y))
 
-        while steps <= 100000:
+        while steps <= self.iterations:
             xf, yf = self.method_of_euler()
             self.trajectory.append((xf, yf))
             steps += 1
@@ -59,7 +61,7 @@ class particle_motion:
         self.euler_trajectory()
         x_vals, y_vals = zip(*self.trajectory)
         plt.figure(figsize=(19, 6))
-        plt.plot(x_vals, y_vals, marker='o', linestyle='-', color='blue', label='Electron Path')
+        plt.plot(x_vals, y_vals, linestyle='-', color='blue', label='Electron Path')
 
         x_min = min(x_vals)
         plt.xlim(x_min, self.domain[1])

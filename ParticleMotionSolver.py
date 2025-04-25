@@ -50,11 +50,11 @@ class particle_motion:
 
             x, y = self.position
             position = self.convert_units(x, y)
-            if self.dinode_colition(position):  # si l'electron touche un dynode fait ajoute 2 mm a la position en y
+            if self.dinode_colition(position):  # si l'electron touche un dynode ajoute 2 mm a la position en y
                 self.position = (self.position[0], self.position[1] + 2*scale_factor_y)    
                 self.method_of_euler()
             steps += 1
-            
+
             xf, yf = self.method_of_euler()
             self.trajectory.append((xf, yf))
 

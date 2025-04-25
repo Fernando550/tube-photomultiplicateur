@@ -16,6 +16,8 @@ class eletric_field:
         self.U = U
         self.V = V
 
+        self.environment = surface
+
     @property
     def magnitude(self):
         return np.sqrt(self.Ex*self.Ex+self.Ey*self.Ey)
@@ -122,8 +124,6 @@ class eletric_field:
 
         Ex_val = self.Ex[idx_y, idx_x]
         Ey_val = self.Ey[idx_y, idx_x]
-
-        print(Ex_val, Ey_val, (x, y))
 
         return Ex_val, Ey_val
                 

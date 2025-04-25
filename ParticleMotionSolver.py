@@ -52,9 +52,9 @@ class particle_motion:
 
             x, y = self.position
             position = self.convert_units(x, y)
-            if self.dinode_colition(position):
-                self.position = (self.position[0], self.position[1] + 2*scale_factor_y)    
-
+            if self.dinode_colition(position):  # si l'electron touche un dynode fait ajoute 2 cm a la position en y
+                self.position = (self.position[0], self.position[1] + 20*scale_factor_y)    
+                self.euler_trajectory()
             steps += 1
 
     def X(self, t=0):
@@ -66,7 +66,6 @@ class particle_motion:
         position = (int(x), int(y))
         #return true if the electron touches a dynoe            
         if position in self.collision_points:
-            print(position)
             return True
         else:
             return False
@@ -111,4 +110,3 @@ class particle_motion:
         plt.grid(True)
         plt.gca().set_aspect('equal') 
         plt.show()
-        # print(self.collision_points)

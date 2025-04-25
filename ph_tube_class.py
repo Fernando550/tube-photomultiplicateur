@@ -30,6 +30,7 @@ class ph_tube(ScalarField):
             "dynode_width": 4,
             "spacing_dynodes": 2,
             "dynode_height": 0.2,
+            "dynodes_positions": None
         }
 
         default.update(settings)
@@ -43,8 +44,9 @@ class ph_tube(ScalarField):
         # delta h
         self.h = 10
  
-
-        self.dynodes_positions = [(3,2), (6,4), (9,2), (12,4)]                      
+        if self.dynodes_positions == None:
+            self.dynodes_positions = [(3,2), (6,4), (9,2), (12,4)] 
+                             
        
         super().__init__((self.height*self.h, self.width*self.h))
 

@@ -20,6 +20,20 @@ def run():
     # 3. Simulation trajectoire 
     electron = particle_motion(e_field)
     electron.draw_path()
+
+    # bonnus
+    p = {
+            "n_dynodes": 12,
+            "spacing": 0,     
+            "spacing_d_sides": 2,
+            "dynode_width": 2,
+            "spacing_dynodes": 1,
+            "dynodes_positions": [(1,2), (2,4), (4,2), (5,4), (7,2), (8,4), (10,2), (11,4), (12,2), (13, 4), (15,2), (16, 4)],
+        }
+
+    new_tube = ph_tube_class.ph_tube(**p)
+    new_tube.set_boundary_conditions()
+    new_tube.show(block=True)
     
 
 if __name__ == "__main__":

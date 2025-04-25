@@ -33,6 +33,7 @@ def run():
 
     new_tube = ph_tube_class.ph_tube(**p)
     new_tube.set_boundary_conditions()
+    new_tube.solve_laplace_by_relaxation()
     new_tube.show(block=True)
     
 

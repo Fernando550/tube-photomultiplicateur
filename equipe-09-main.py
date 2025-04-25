@@ -20,7 +20,6 @@ def run():
     # 3. Simulation trajectoire 
     electron = particle_motion(e_field)
     electron.draw_path()
-    print(electron.X(4))
 
     # bonnus
     p = {

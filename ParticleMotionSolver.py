@@ -47,18 +47,19 @@ class particle_motion:
         steps = 0
        
         while steps <= self.iterations:
-            xf, yf = self.method_of_euler()
-            self.trajectory.append((xf, yf))
 
             x, y = self.position
             position = self.convert_units(x, y)
             if self.dinode_colition(position):  # si l'electron touche un dynode fait ajoute 2 mm a la position en y
                 self.position = (self.position[0], self.position[1] + 2*scale_factor_y)    
-                self.euler_trajectory()
+                self.method_of_euler()
             steps += 1
+            
+            xf, yf = self.method_of_euler()
+            self.trajectory.append((xf, yf))
 
     def X(self, t=0): #position par rapport au temps
-        position = int(t*self.dt)
+        position = int(t*self.dt*1000)
         x, y = self.trajectory[position]
         return x*scale_factor_x, y*scale_factor_y
     

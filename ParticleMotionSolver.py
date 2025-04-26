@@ -50,7 +50,7 @@ class particle_motion:
 
             x, y = self.position
             position = self.convert_units(x, y)
-            if self.dinode_colition(position):  # si l'electron touche un dynode ajoute 2 mm a la position en y
+            if self.dinode_colition(position):  # si l'electron touche une dynode, ajoute 2 mm à la position en y
                 self.position = (self.position[0], self.position[1] + 2*scale_factor_y)    
             
 
@@ -66,7 +66,7 @@ class particle_motion:
     def dinode_colition(self, position):
         x, y = position
         position = (int(x), int(y))
-        #return true if the electron touches a dynoe            
+        #return true si l'électron touche à la dynode            
         if position in self.collision_points:
             return True
         else:

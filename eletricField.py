@@ -47,7 +47,7 @@ class eletric_field:
         return U_norm * self.field_magnitude, V_norm * self.field_magnitude
     
     def vector_field_reduced(self):
-        step = 4
+        step = 3
 
         X_sub = self.X[::step, ::step]
         Y_sub = self.Y[::step, ::step]
@@ -77,43 +77,37 @@ class eletric_field:
         plt.show()
 
     def display(self, use_color=True, title="Electric Field"):
-
         if self.quiver_axes is None:
             self.quiver_axes = plt.subplot(1, 1, 1)
             self.quiver_axes.tick_params(direction="in")
 
         self.quiver_axes.cla()
 
-        X, Y = self.xy_mesh()
+        # Remplacer X,Y par les coordonnées sous-échantillonnées
+        X_sub, Y_sub, Ex_sub, Ey_sub = self.vector_field_reduced()
 
         if use_color:
-            lengths = self.magnitude.copy()
+            lengths = np.sqrt(Ex_sub**2 + Ey_sub**2)
             lengths[lengths == 0] = 1
 
-            U = self.Ex / lengths
-            V = self.Ey / lengths
+            U = Ex_sub / lengths
+            V = Ey_sub / lengths
 
             percentile_10th = np.percentile(lengths, 10)
             percentile_90th = np.percentile(lengths, 90)
             colors = np.clip(lengths, percentile_10th, percentile_90th)
 
-            quiv = self.quiver_axes.quiver(X, Y, U, V, colors, cmap="viridis_r")
+            quiv = self.quiver_axes.quiver(X_sub, Y_sub, U, V, colors, cmap="viridis_r")
         else:
-            quiv = self.quiver_axes.quiver(X, Y, self.Ex, self.Ey)
+            quiv = self.quiver_axes.quiver(X_sub, Y_sub, Ex_sub, Ey_sub)
 
         self.quiver_axes.set_aspect('equal')
-
-        y_half_range = np.abs(self.Y).max()
+        y_half_range = np.abs(Y_sub).max()  # Ajusté pour utiliser Y_sub
         self.quiver_axes.set_ylim(-y_half_range, y_half_range)
-
-
-        # plt.axhline(0, color='black', linestyle='--', linewidth=0.5)
-        # plt.axvline(0, color='black', linestyle='--', linewidth=0.5)
 
         plt.title(title)
         cbar = plt.colorbar(quiv, ax=self.quiver_axes)
-        cbar.set_label('Vector Magnitude')
-
+        cbar.set_label('Vector Magnitude [V/mm]')
         plt.show()
         self.quiver_axes = None
 

@@ -6,14 +6,14 @@ def run():
     # 1. Calcul du potentiel
     tube = ph_tube_class.ph_tube()
     tube.set_boundary_conditions()
-    tube.show(block=False)
+    tube.show(block=True)
     tube.solve_laplace_by_relaxation()
-    tube.show(block=False)
+    tube.show(block=True)
 
 
     e_field = eletric_field(tube)
 
-    # 1. Calcul du champ électrique
+    # 2. Calcul du champ électrique
 
     e_field.display()
     
@@ -21,7 +21,7 @@ def run():
     electron = particle_motion(e_field)
     electron.draw_path()
 
-    # bonnus
+    # Bonus
     p = {
             "n_dynodes": 12,
             "spacing": 0,     

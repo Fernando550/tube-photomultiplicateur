@@ -5,20 +5,6 @@ from scalarfield import ScalarField
 
 import my_tools
 
-
-'''
-        Initialise le tube. 
-
-        Arguments :
-        N : nombre de dynodes dans le tube
-        a : espacement entre les dynodes et les extrémités du tube (mm)
-        b : espacement entre les dynodes et les côtés du tube (mm)
-        c : longueur d'une dynode (mm)
-        d : espacement entre les dynodes (mm)
-        e : épaisseur d'une dynode (mm)
-        f : largeur de la base du tube (mm)
-        '''
-
 class ph_tube(ScalarField):
     '''Le tube photomultiplicateur!'''
     def __init__(self, **settings):
@@ -62,7 +48,7 @@ class ph_tube(ScalarField):
         if positions is None:
             positions = self.set_dynodes_positions()
 
-    # Mettre TOUTE l'enceinte à 0V (bords haut/bas/gauche/droite)
+    # Met toute l'enceinte à 0V (bords haut/bas/gauche/droite)
         self.values[0,:] = 0    # Bord haut
         self.values[-1,:] = 0   # Bord bas
         self.values[:,0] = 0    # Bord gauche
